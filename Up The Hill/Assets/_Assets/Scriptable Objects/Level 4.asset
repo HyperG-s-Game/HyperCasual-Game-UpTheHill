@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1122c5a59a71ab94aa93f93f895f471c, type: 3}
+  m_Name: Level 4
+  m_EditorClassIdentifier: 
+  currentScene: 5
+  levelName: Level 4
+  levelColor: {r: 1, g: 0, b: 0.44890594, a: 1}
+  tablePrefab:
+  - {fileID: 6614814731956836913, guid: 795337f8fa31c684eb8bad8fd0080774, type: 3}
+  hasUnloacked: 1
+  isCompleted: 0
