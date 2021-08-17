@@ -914,6 +914,7 @@ MonoBehaviour:
   - {fileID: 7571272230652348018}
   - {fileID: 7571272231444934900}
   - {fileID: 7571272231686169366}
+  endTable: {fileID: 7571272230790007878}
   startingPoint: {fileID: 7571272230416722521}
   currentActiveTable: 0
   isTableCleared: 0
@@ -1531,7 +1532,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7571272230586908953}
   m_LocalRotation: {x: -0, y: -0.65331966, z: -0, w: 0.7570822}
-  m_LocalPosition: {x: -0.11, y: 1.5767742, z: 0.99}
+  m_LocalPosition: {x: -0.126, y: 1.5767742, z: 0.881}
   m_LocalScale: {x: 0.32077837, y: 0.3207784, z: 0.3207783}
   m_Children: []
   m_Father: {fileID: 7571272231364406118}
@@ -1812,6 +1813,7 @@ MonoBehaviour:
   currentPosIndex: 0
   moveSpeed: 1
   easeType: 17
+  collectedBalls: []
 --- !u!1 &7571272230877556816
 GameObject:
   m_ObjectHideFlags: 0
@@ -2426,8 +2428,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.29417992, y: 0.1942786, z: 0.15638459}
-  m_Center: {x: -0.060930837, y: 0.0682421, z: 0.02256252}
+  m_Size: {x: 0.1947344, y: 0.1942786, z: 0.15638459}
+  m_Center: {x: -0.011208258, y: 0.0682421, z: 0.022562578}
 --- !u!114 &7571272231397183610
 MonoBehaviour:
   m_ObjectHideFlags: 0

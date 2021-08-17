@@ -35,16 +35,16 @@ public class Ball : MonoBehaviour {
                     
                     rb.AddForce((Vector3.up + Vector3.back).normalized * 10f, ForceMode.Impulse);
                     rb.useGravity = true;
-                    Destroy(coli.gameObject,5f);
                 }
-           }
-           else if(coli.gameObject.CompareTag("Boarder")){
-
-            
+            }
+           if(coli.gameObject.CompareTag("Boarder")){
                 rb.AddForce((Vector3.up + coli.GetContact(0).normal).normalized * 10f, ForceMode.Impulse);
                 rb.useGravity = true;
-                Destroy(coli.gameObject,5f);
-           }
+                
+            }
+            if(coli != null){
+                Destroy(gameObject,5f);
+            }
         }
     }
 

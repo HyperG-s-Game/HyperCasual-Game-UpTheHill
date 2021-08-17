@@ -23,8 +23,9 @@ public class GameManager : MonoBehaviour {
     public static GameManager instance{get;private set;}
     public bool m_levelStarted,m_isGameOver,m_moveToNextTable;
     public bool isLoss;
-    private List<StartingTable> clearedTablesList = new List<StartingTable>();
+    public List<StartingTable> clearedTablesList = new List<StartingTable>();
     public LevelManager levelManager;
+    private int totalTableCount;
     private void Awake(){
         #if UNITY_EDITOR
             Debug.unityLogger.logEnabled = true;
@@ -34,19 +35,21 @@ public class GameManager : MonoBehaviour {
         if(instance == null){
             instance = this;
         }
-        clearedTablesList = new List<StartingTable>();
     }
     private void Start(){
-
+        clearedTablesList = new List<StartingTable>();
+        
         currentTableIndex = 0;
-        StartCoroutine(StartLevelRoutine());
+        StartCoroutine(nameof(StartLevelRoutine));
     }
 
 
     private IEnumerator StartLevelRoutine(){
+
         levelManager.CreateLevel();
         levelManager.SetCurrentTable(currentTableIndex);
         StartLevelEvents?.Invoke();
+        totalTableCount = levelManager.GetTableList.Count;
         while(!m_levelStarted){
             Debug.Log("Tap Play Button to Start the Level");
             // Shows the Starting screen.
@@ -70,35 +73,27 @@ public class GameManager : MonoBehaviour {
         levelManager.GetCurrentTable.TableRotate(true);
         levelManager.GetCurrentTable.StartTimer = true;
         while(!m_isGameOver) {
+            
+            Debug.Log("Ready To shoot the Ball");
+            // move to the next Table.
+            m_isGameOver = hasWon() || hasLost();
+            
+            
+            if(m_isGameOver){
+                break;
+            }
             while(!shooter.hasShootTheBall){
                 
-                Debug.Log("Ready To shoot the Ball");
-                // move to the next Table.
-                m_isGameOver = hasWon() || isLoss;
-                if(m_isGameOver){
-                    // yield return new WaitForSeconds(0.5f);
-                    if(hasWon()){
-                        Debug.Log("has Won");
-                        winningEvents?.Invoke();
-                    }else{
-                        Debug.Log("you Loss");
-                        lossEvents?.Invoke();
-                    }
-                    yield break;
-                    
-                }
                 // Wait for the Player to shoot the Ball.
 
                 yield return null;
 
             }
             if(levelManager.GetCurrentTable.isTableCleared){
-
                yield return StartCoroutine(moveToNextTable());
             }
             shooter.hasShootTheBall = false;
             // WaitFor Seconds.
-            yield return new WaitForSeconds(0.1f);
             Debug.Log("Move the ball to the shooting Pos");
             // Move the Next Ball to the shooting Point.
             levelManager.GetCurrentTable.MoveBallToShootingPoint();
@@ -108,6 +103,18 @@ public class GameManager : MonoBehaviour {
             // Loop Go on Until all the ball are in the end Table.
             yield return null;
         }
+        if(hasWon()){
+            Debug.Log("has Won");
+            isLoss = false;
+            levelManager.SetLevelCompleted(true);
+            winningEvents?.Invoke();
+        }else{
+            isLoss = true;
+            Debug.Log("you Loss");
+            lossEvents?.Invoke();
+        }
+        levelManager.SetLevelCompleted(hasWon());
+        
         // Check for Table Clear or Loss.
             // if Player wins then advance to next Table (if Has).
             // if player loss then show game over window and ask for restart.
@@ -120,14 +127,14 @@ public class GameManager : MonoBehaviour {
 
         shooter.canShoot = false;
         levelManager.GetCurrentTable.currentActiveTable = false;
-        yield return new WaitForSeconds(1f);
-        // levelManager.GetCurrentTable.TableRotate(false);
+        yield return new WaitForSeconds(0.5f);
+        
         if(!clearedTablesList.Contains(levelManager.GetCurrentTable)){
             clearedTablesList.Add(levelManager.GetCurrentTable);
         }
 
         currentTableIndex++;
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         UIManager.instance.SetTableNumber(currentTableIndex);
         levelManager.SetCurrentTable(currentTableIndex);
         levelManager.GetCurrentTable.ResetTimer();
@@ -141,11 +148,21 @@ public class GameManager : MonoBehaviour {
     
     
     private bool hasWon(){
-        if(levelManager.GetTableList.Count == clearedTablesList.Count){
-            foreach(StartingTable tables in clearedTablesList){
-                return tables.isTableCleared;
+        if(!levelManager.GetCurrentTable.isGameLost){
+            if(clearedTablesList.Count == totalTableCount){
+                for (int i = 0; i < clearedTablesList.Count; i++){
+                    if(clearedTablesList[i].isTableCleared){
+                        return true;
+                    }
+                }
             }
-            
+
+        }
+        return false;
+    }
+    private bool hasLost(){
+        if(levelManager.GetCurrentTable.isGameLost){
+            return true;
         }
         return false;
     }

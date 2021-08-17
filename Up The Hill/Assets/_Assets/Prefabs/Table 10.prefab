@@ -1435,6 +1435,7 @@ MonoBehaviour:
   - {fileID: 7571272230652348018}
   - {fileID: 7571272231444934900}
   - {fileID: 7571272231686169366}
+  endTable: {fileID: 7571272230790007878}
   startingPoint: {fileID: 7571272230416722521}
   currentActiveTable: 0
   isTableCleared: 0
@@ -2332,6 +2333,7 @@ MonoBehaviour:
   currentPosIndex: 0
   moveSpeed: 1
   easeType: 17
+  collectedBalls: []
 --- !u!1 &7571272230877556816
 GameObject:
   m_ObjectHideFlags: 0

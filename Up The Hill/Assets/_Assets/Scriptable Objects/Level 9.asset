@@ -15,7 +15,5 @@ MonoBehaviour:
   currentScene: 10
   levelName: Level 9
   levelColor: {r: 0.3300646, g: 0.6792453, b: 0, a: 1}
-  tablePrefab:
-  - {fileID: 7571272229704210245, guid: 398fc23b1f541f342b651d247f855586, type: 3}
   hasUnloacked: 1
   isCompleted: 0

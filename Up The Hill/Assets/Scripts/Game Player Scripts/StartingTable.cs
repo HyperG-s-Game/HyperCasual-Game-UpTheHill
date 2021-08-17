@@ -15,6 +15,7 @@ public class StartingTable : MonoBehaviour {
     public iTween.EaseType easeType = iTween.EaseType.easeInExpo;
     public List<Ball> ballsList = new List<Ball>();
     public List<Transform> ballPositionPoint = new List<Transform>();
+    public EndTable endTable;
     public Transform startingPoint;
     private int currentPosIndex;
     
@@ -50,7 +51,6 @@ public class StartingTable : MonoBehaviour {
         if(ballsList.Count == 0){
             if(!isTableCleared){
                 isTableCleared = true;
-
             }
         }
         if(StartTimer){
@@ -105,6 +105,11 @@ public class StartingTable : MonoBehaviour {
     public bool GetCompletedTheCurrentTable{
         get{
             return isTableCleared;
+        }
+    }
+    public bool isGameLost{
+        get{
+            return isTableCleared && endTable.collectedBalls.Count == 0;
         }
     }
     public int GetCurrentTime{

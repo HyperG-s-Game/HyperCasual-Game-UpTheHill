@@ -376,6 +376,7 @@ MonoBehaviour:
   currentPosIndex: 0
   moveSpeed: 1
   easeType: 17
+  collectedBalls: []
 --- !u!1 &4677702022334763240
 GameObject:
   m_ObjectHideFlags: 0
@@ -978,6 +979,7 @@ MonoBehaviour:
   ballPositionPoint:
   - {fileID: 6614814731585207907}
   - {fileID: 6614814732807179891}
+  endTable: {fileID: 3686295911229470367}
   startingPoint: {fileID: 6614814731628889793}
   currentActiveTable: 0
   isTableCleared: 0

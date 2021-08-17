@@ -11,8 +11,10 @@ public class EndTable : MonoBehaviour {
 
     public float moveSpeed = 1f;
     public iTween.EaseType easeType = iTween.EaseType.easeInOutExpo;
+    public List<Ball> collectedBalls;
     
-    private void Awake(){
+    private void Start(){
+        collectedBalls = new List<Ball>();
         currentPosIndex = 0;
     }
     private void Update(){
@@ -26,8 +28,8 @@ public class EndTable : MonoBehaviour {
     public void MoveTheBallToEndTablePoint(Ball _ball){
         if(!_ball.hasReachedEndTable){
             StartCoroutine(MoveBalls(_ball.gameObject));
-            
             _ball.hasReachedEndTable = true;
+            collectedBalls.Add(_ball);
         }
     }
    
@@ -52,6 +54,7 @@ public class EndTable : MonoBehaviour {
             "easeType",easeType
         ));
         _ball.transform.SetParent(collectedBallTransforms[currentPosIndex]);
+        
         Debug.Log("has Move to the end in the end table");
         
         currentPosIndex++;

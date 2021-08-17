@@ -16,8 +16,9 @@ public class LevelManager : MonoBehaviour {
     
     public void CreateLevel(){
         tablesList = new List<StartingTable>();
-        for (int i = 0; i < currentLevelData.tablePrefab.Count; i++){
-            StartingTable table = Instantiate(currentLevelData.tablePrefab[i],spawnPoints[i].position,Quaternion.identity);
+        
+        for (int i = 0; i < currentLevelData.GetTableList().Count; i++){
+            StartingTable table = Instantiate(currentLevelData.GetTableList()[i],spawnPoints[i].position,Quaternion.identity);
             table.gameObject.SetActive(false);
             tablesList.Add(table);
         }
@@ -45,9 +46,9 @@ public class LevelManager : MonoBehaviour {
         StartCoroutine(MoveOutOfTheViewPoint(_table));
     }
     public IEnumerator  MoveOutOfTheViewPoint(StartingTable _obj){
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         _obj.TableRotate(false);
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(1f);
         _obj.gameObject.SetActive(false);
         
         

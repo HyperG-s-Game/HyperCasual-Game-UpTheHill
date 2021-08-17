@@ -20,11 +20,22 @@ public enum SceneIndex{
     Level_81 = 82, Level_82 = 83, Level_83 = 84, Level_84 = 85, Level_85 = 86, Level_86 = 87,Level_87 = 88, Level_88 = 89, Level_89 = 90, Level_90 = 91, Level_91 = 92, Level_92 = 93,
     Level_93 = 94, Level_94 = 95, Level_95 = 96, Level_96 = 97, Level_97 = 98, Level_98 = 99,Level_99 = 100,Level_100 = 101,
 }
+[System.Serializable]
+public class LevelsTableData{
+    public LevelSO level;
+    public List<StartingTable> tablesPerLevel;
+    public void AddTableToLevel(){
+        for (int i = 0; i < tablesPerLevel.Count; i++){
+            level.AddTable(tablesPerLevel[i]);
+        }
+    }
+}
 
 public class LevelLoader : MonoBehaviour{
     
     [SerializeField] private GameObject loadingScreen;
-    public List<LevelSO> levelList;
+    [SerializeField] private LevelsTableData[] levelsTableData;
+    [SerializeField] private List<LevelSO> levelList;
     [SerializeField] private Image loadingBar;
     public SceneIndex currentLevel;
     public static LevelLoader instance {get;private set;}
@@ -36,21 +47,29 @@ public class LevelLoader : MonoBehaviour{
             Destroy(instance.gameObject);
         }
         DontDestroyOnLoad(instance.gameObject);
-
         if(loadingScreen == null){
             loadingScreen = transform.Find("loadingScreen").gameObject;
         }
-        
+
     }
     
     
     private void Start(){
+        
         SwitchScene(SceneIndex.Main_Menu);
         for (int i = 0; i < levelList.Count; i++){
+            levelList[i].CreateNewTableList();
             if(!levelList[i].isCompleted){
                 currentLevel = levelList[i].currentScene;
                 break;
             }
+        }
+        AddTableToLevels();
+    }
+    [ContextMenu("Add Table")]
+    private void AddTableToLevels(){
+        for (int i = 0; i < levelsTableData.Length; i++){
+            levelsTableData[i].AddTableToLevel();
         }
     }
     

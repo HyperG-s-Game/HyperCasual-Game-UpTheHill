@@ -10,9 +10,18 @@ public class LevelSO : ScriptableObject {
 
     public string levelName;
     public Color levelColor; // it will be replaced with the privew of the level.
-    public List<StartingTable> tablePrefab;
+    private List<StartingTable> tablePrefabList;
     public bool hasUnloacked;
     public bool isCompleted;
+    public void CreateNewTableList(){
+        tablePrefabList = new List<StartingTable>();
+    }
+    public void AddTable(StartingTable tables){
+
+        if(!tablePrefabList.Contains(tables)){
+            tablePrefabList.Add(tables);
+        }
+    }
     [ContextMenu("Save")]
     public void Save(){
         string data = JsonUtility.ToJson(this,true);
@@ -31,5 +40,10 @@ public class LevelSO : ScriptableObject {
             Stream.Close();
         }
     }
+    public List<StartingTable> GetTableList(){
+        return tablePrefabList;
+    }
+    
+    
 
 }
