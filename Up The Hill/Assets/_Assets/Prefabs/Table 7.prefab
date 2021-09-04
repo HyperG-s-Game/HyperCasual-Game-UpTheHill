@@ -985,6 +985,8 @@ MonoBehaviour:
   forwardShooterDirection: {fileID: 162206360995133896}
   timeToMove: 1
   easeType: 15
+  timerToMoveToShootingPos: 0.1
+  easyTypeForLaterBalls: 17
   ballsList:
   - {fileID: 7571272231301754311}
   - {fileID: 7571272229927888895}
@@ -1002,8 +1004,6 @@ MonoBehaviour:
   endTable: {fileID: 7571272230790007878}
   startingPoint: {fileID: 7571272230416722521}
   currentActiveTable: 0
-  isTableCleared: 0
-  StartTimer: 0
 --- !u!1 &7571272229740532523
 GameObject:
   m_ObjectHideFlags: 0
@@ -1062,7 +1062,7 @@ Transform:
   m_LocalScale: {x: 0.32077837, y: 0.3207784, z: 0.3207783}
   m_Children: []
   m_Father: {fileID: 7571272231364406118}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7571272229905074069
 GameObject:
@@ -1078,6 +1078,7 @@ GameObject:
   - component: {fileID: 7571272229905074066}
   - component: {fileID: 7571272229905074067}
   - component: {fileID: 7571272229905074079}
+  - component: {fileID: 7906010266981301125}
   m_Layer: 0
   m_Name: Ball  6
   m_TagString: Ball
@@ -1189,9 +1190,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 376feb05b3a19a64eb821385759fa293, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pushForce: 3
-  hasFired: 0
-  hasReachedEndTable: 0
+  shootSpeed: 6
+--- !u!114 &7906010266981301125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7571272229905074069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f9c80ac7ea220f4499c604219518059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spineSpeed: 20
+  direction: 0
 --- !u!1 &7571272229926060272
 GameObject:
   m_ObjectHideFlags: 0
@@ -1250,6 +1263,7 @@ GameObject:
   - component: {fileID: 7571272229927888882}
   - component: {fileID: 7571272229927888883}
   - component: {fileID: 7571272229927888895}
+  - component: {fileID: 5832470434749111843}
   m_Layer: 0
   m_Name: Ball 2
   m_TagString: Ball
@@ -1361,9 +1375,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 376feb05b3a19a64eb821385759fa293, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pushForce: 3
-  hasFired: 0
-  hasReachedEndTable: 0
+  shootSpeed: 6
+--- !u!114 &5832470434749111843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7571272229927888885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f9c80ac7ea220f4499c604219518059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spineSpeed: 20
+  direction: 0
 --- !u!1 &7571272230008313335
 GameObject:
   m_ObjectHideFlags: 0
@@ -1422,7 +1448,7 @@ Transform:
   m_LocalScale: {x: 0.32077837, y: 0.3207784, z: 0.3207783}
   m_Children: []
   m_Father: {fileID: 7571272231364406118}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7571272230249332699
 GameObject:
@@ -1490,6 +1516,7 @@ Transform:
   - {fileID: 7571272230680187838}
   - {fileID: 7571272229905074068}
   - {fileID: 3901701540477175754}
+  - {fileID: 7571272230416722521}
   m_Father: {fileID: 7571272229704210244}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1563,11 +1590,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7571272230416722522}
   m_LocalRotation: {x: -0.52835697, y: -0.46993506, z: -0.46993506, w: 0.52835697}
-  m_LocalPosition: {x: 0, y: 1.5755615, z: 0}
-  m_LocalScale: {x: 99.999985, y: 99.99996, z: 100}
+  m_LocalPosition: {x: 0, y: 0.0019999982, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 7571272231364406118}
-  m_RootOrder: 0
+  m_Father: {fileID: 7571272230267986377}
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7571272230547010334
 GameObject:
@@ -1627,7 +1654,7 @@ Transform:
   m_LocalScale: {x: 0.32077837, y: 0.3207784, z: 0.3207783}
   m_Children: []
   m_Father: {fileID: 7571272231364406118}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7571272230632290949
 GameObject:
@@ -1687,7 +1714,7 @@ Transform:
   m_LocalScale: {x: 0.32077837, y: 0.3207784, z: 0.3207783}
   m_Children: []
   m_Father: {fileID: 7571272231364406118}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7571272230662531863
 GameObject:
@@ -1733,6 +1760,7 @@ GameObject:
   - component: {fileID: 7571272230680187836}
   - component: {fileID: 7571272230680187837}
   - component: {fileID: 7571272230680187833}
+  - component: {fileID: 4718366553246024001}
   m_Layer: 0
   m_Name: Ball 5
   m_TagString: Ball
@@ -1844,9 +1872,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 376feb05b3a19a64eb821385759fa293, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pushForce: 3
-  hasFired: 0
-  hasReachedEndTable: 0
+  shootSpeed: 6
+--- !u!114 &4718366553246024001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7571272230680187839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f9c80ac7ea220f4499c604219518059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spineSpeed: 20
+  direction: 0
 --- !u!1 &7571272230790007992
 GameObject:
   m_ObjectHideFlags: 0
@@ -1892,7 +1932,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86f0b02967b052b408c8eab9df30ff97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pipe: {fileID: 7571272231397183610}
+  moveSpeed: 1
   collectedBallTransforms:
   - {fileID: 7571272230361444101}
   - {fileID: 7571272230008313334}
@@ -1902,9 +1942,10 @@ MonoBehaviour:
   - {fileID: 7571272229740532522}
   checkPoint: {fileID: 7571272230249332698}
   currentPosIndex: 0
-  moveSpeed: 1
+  pipe: {fileID: 7571272231397183610}
   easeType: 17
   collectedBalls: []
+  ballMovingThroughPipe: 0
 --- !u!1 &7571272230877556816
 GameObject:
   m_ObjectHideFlags: 0
@@ -2000,6 +2041,7 @@ GameObject:
   - component: {fileID: 7571272231070312068}
   - component: {fileID: 7571272231070312069}
   - component: {fileID: 7571272231070312065}
+  - component: {fileID: 7274419494231635462}
   m_Layer: 0
   m_Name: Ball 4
   m_TagString: Ball
@@ -2111,9 +2153,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 376feb05b3a19a64eb821385759fa293, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pushForce: 3
-  hasFired: 0
-  hasReachedEndTable: 0
+  shootSpeed: 6
+--- !u!114 &7274419494231635462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7571272231070312071}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f9c80ac7ea220f4499c604219518059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spineSpeed: 20
+  direction: 0
 --- !u!1 &7571272231250066572
 GameObject:
   m_ObjectHideFlags: 0
@@ -2172,6 +2226,7 @@ GameObject:
   - component: {fileID: 7571272231301753402}
   - component: {fileID: 7571272231301753403}
   - component: {fileID: 7571272231301754311}
+  - component: {fileID: 8489694931690904080}
   m_Layer: 0
   m_Name: Ball 1
   m_TagString: Ball
@@ -2283,9 +2338,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 376feb05b3a19a64eb821385759fa293, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pushForce: 3
-  hasFired: 0
-  hasReachedEndTable: 0
+  shootSpeed: 6
+--- !u!114 &8489694931690904080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7571272231301753405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f9c80ac7ea220f4499c604219518059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spineSpeed: 20
+  direction: 0
 --- !u!1 &7571272231308406390
 GameObject:
   m_ObjectHideFlags: 0
@@ -2300,6 +2367,7 @@ GameObject:
   - component: {fileID: 7571272231308406387}
   - component: {fileID: 7571272231308406388}
   - component: {fileID: 7571272231308406384}
+  - component: {fileID: 1457806074879769643}
   m_Layer: 0
   m_Name: Ball 3
   m_TagString: Ball
@@ -2411,9 +2479,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 376feb05b3a19a64eb821385759fa293, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pushForce: 3
-  hasFired: 0
-  hasReachedEndTable: 0
+  shootSpeed: 6
+--- !u!114 &1457806074879769643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7571272231308406390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f9c80ac7ea220f4499c604219518059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spineSpeed: 20
+  direction: 0
 --- !u!1 &7571272231364406119
 GameObject:
   m_ObjectHideFlags: 0
@@ -2441,7 +2521,6 @@ Transform:
   m_LocalPosition: {x: 0, y: -0.013755619, z: 0}
   m_LocalScale: {x: 0.0100000035, y: 0.010000001, z: 0.010000003}
   m_Children:
-  - {fileID: 7571272230416722521}
   - {fileID: 7571272230168375844}
   - {fileID: 7571272229839388463}
   - {fileID: 7571272230586908952}
@@ -2512,6 +2591,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d15f841e70adc6a448b31f0b14c968b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  table: {fileID: 7571272229704210245}
   collectedBallsList: []
 --- !u!1 &7571272231444934901
 GameObject:
@@ -2541,7 +2621,7 @@ Transform:
   m_LocalScale: {x: 0.32077837, y: 0.3207784, z: 0.3207783}
   m_Children: []
   m_Father: {fileID: 7571272231364406118}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7571272231686169367
 GameObject:
@@ -2571,7 +2651,7 @@ Transform:
   m_LocalScale: {x: 0.32077837, y: 0.3207784, z: 0.3207783}
   m_Children: []
   m_Father: {fileID: 7571272231364406118}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &3619106423797876385
 PrefabInstance:

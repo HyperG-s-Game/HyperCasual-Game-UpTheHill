@@ -11,8 +11,7 @@ public class LevelSO : ScriptableObject {
     public string levelName;
     public Color levelColor; // it will be replaced with the privew of the level.
     private List<StartingTable> tablePrefabList;
-    public bool hasUnloacked;
-    public bool isCompleted;
+    public LevelData levelData;
     public void CreateNewTableList(){
         tablePrefabList = new List<StartingTable>();
     }
@@ -24,19 +23,19 @@ public class LevelSO : ScriptableObject {
     }
     [ContextMenu("Save")]
     public void Save(){
-        string data = JsonUtility.ToJson(this,true);
+        string data = JsonUtility.ToJson(levelData,true);
         BinaryFormatter formatter = new BinaryFormatter();
-        FileStream file = File.Create(string.Concat(Application.persistentDataPath,"/","Level Data",currentScene));
+        FileStream file = File.Create(string.Concat(Application.persistentDataPath,"/","Level Data",currentScene.ToString()));
         formatter.Serialize(file,data);
         file.Close();
     }
 
     [ContextMenu("Load")]
     public void Load(){
-        if(File.Exists((string.Concat(Application.persistentDataPath,"/","Level Data",currentScene)))){
+        if(File.Exists((string.Concat(Application.persistentDataPath,"/","Level Data",currentScene.ToString())))){
             BinaryFormatter formatter = new BinaryFormatter();
-            FileStream Stream = File.Open(string.Concat(Application.persistentDataPath,"/","Level Data",currentScene),FileMode.Open);
-            JsonUtility.FromJsonOverwrite(formatter.Deserialize(Stream).ToString(),this);
+            FileStream Stream = File.Open(string.Concat(Application.persistentDataPath,"/","Level Data",currentScene.ToString()),FileMode.Open);
+            JsonUtility.FromJsonOverwrite(formatter.Deserialize(Stream).ToString(),levelData);
             Stream.Close();
         }
     }
@@ -44,6 +43,15 @@ public class LevelSO : ScriptableObject {
         return tablePrefabList;
     }
     
-    
+    public void ClearTableList(){
+        tablePrefabList.Clear();
+        
+    }
 
+}
+
+[System.Serializable]
+public class LevelData{
+    public bool hasUnloacked;
+    public bool isCompleted;
 }

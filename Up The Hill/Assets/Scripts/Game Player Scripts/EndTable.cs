@@ -4,14 +4,16 @@ using System.Collections.Generic;
 
 public class EndTable : MonoBehaviour {
     
-    public Pipe pipe;
-    public List<Transform> collectedBallTransforms = new List<Transform>();
-    public Transform checkPoint;
-    public int currentPosIndex;
 
-    public float moveSpeed = 1f;
-    public iTween.EaseType easeType = iTween.EaseType.easeInOutExpo;
-    public List<Ball> collectedBalls;
+    [SerializeField] private float moveSpeed = 1f;
+    [SerializeField] private List<Transform> collectedBallTransforms = new List<Transform>();
+    [SerializeField] private Transform checkPoint;
+    [SerializeField] private int currentPosIndex;
+    [SerializeField] private Pipe pipe;
+    [SerializeField] private iTween.EaseType easeType = iTween.EaseType.easeInOutExpo;
+    [SerializeField] private List<Ball> collectedBalls;
+    [SerializeField] private bool ballMovingThroughPipe;
+
     
     private void Start(){
         collectedBalls = new List<Ball>();
@@ -26,15 +28,16 @@ public class EndTable : MonoBehaviour {
         }
     }
     public void MoveTheBallToEndTablePoint(Ball _ball){
-        if(!_ball.hasReachedEndTable){
+        if(!_ball.GetHasReachedTable){
             StartCoroutine(MoveBalls(_ball.gameObject));
-            _ball.hasReachedEndTable = true;
+            _ball.SetReachedTable(true);
+            
             collectedBalls.Add(_ball);
         }
     }
    
     public IEnumerator MoveBalls(GameObject _ball){
-        
+        ballMovingThroughPipe = true;
         while(_ball.transform.position != checkPoint.transform.position){
             iTween.MoveTo(_ball.gameObject,iTween.Hash (
                 "x",checkPoint.position.x,
@@ -55,11 +58,21 @@ public class EndTable : MonoBehaviour {
         ));
         _ball.transform.SetParent(collectedBallTransforms[currentPosIndex]);
         
-        Debug.Log("has Move to the end in the end table");
+        Debug.Log(transform.name + " has Move to the end in the end table");
         
         currentPosIndex++;
+        ballMovingThroughPipe = false;
     }
     
-
+    public List<Ball> GetListOfCollectedBalls{
+        get{
+            return collectedBalls;
+        }
+    }
+    public bool GetIsBallMovingThroughPipe{
+        get{
+            return ballMovingThroughPipe;
+        }
+    }
 
 }

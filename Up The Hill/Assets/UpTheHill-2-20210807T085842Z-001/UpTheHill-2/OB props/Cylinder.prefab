@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2320482290224615252}
   - component: {fileID: 3924564095177665824}
   - component: {fileID: 2305047416472789946}
+  - component: {fileID: 7423364015161123164}
   m_Layer: 0
   m_Name: Cylinder
   m_TagString: Boarder
@@ -81,3 +82,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!135 &7423364015161123164
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5672174098434775909}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.08719593
+  m_Center: {x: -0.17079681, y: 0.24207437, z: 0.5305928}

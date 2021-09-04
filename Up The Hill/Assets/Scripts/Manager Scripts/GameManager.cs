@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour {
             // Tap the Play Button to Start the Game.
             yield return null;
         }
-        shooter.table = levelManager.GetCurrentTable;
+        shooter.SetTable(levelManager.GetCurrentTable);
         
         
         yield return StartCoroutine(PlayLevelRoutine());
@@ -69,47 +69,40 @@ public class GameManager : MonoBehaviour {
         // Move the First Ball to the shooting Point.
         levelManager.GetCurrentTable.MoveBallToShootingPoint();
         yield return new WaitForSeconds(0.5f);
-        shooter.canShoot = true;
+        shooter.SetCanShoot(true);
         levelManager.GetCurrentTable.TableRotate(true);
-        levelManager.GetCurrentTable.StartTimer = true;
+        levelManager.GetCurrentTable.TurnOnTimer(true);
         while(!m_isGameOver) {
             
             Debug.Log("Ready To shoot the Ball");
             // move to the next Table.
             m_isGameOver = hasWon() || hasLost();
-            
-            
             if(m_isGameOver){
                 break;
             }
-            while(!shooter.hasShootTheBall){
+            while(!shooter.GetCanShoot){
                 
                 // Wait for the Player to shoot the Ball.
 
                 yield return null;
 
             }
-            if(levelManager.GetCurrentTable.isTableCleared){
+            if(levelManager.GetCurrentTable.GetCompletedTheCurrentTable){
                yield return StartCoroutine(moveToNextTable());
             }
-            shooter.hasShootTheBall = false;
+            shooter.SetHasShotTheBall(false);
             // WaitFor Seconds.
             Debug.Log("Move the ball to the shooting Pos");
             // Move the Next Ball to the shooting Point.
             levelManager.GetCurrentTable.MoveBallToShootingPoint();
-            
-
-
             // Loop Go on Until all the ball are in the end Table.
             yield return null;
         }
         if(hasWon()){
             Debug.Log("has Won");
-            isLoss = false;
             levelManager.SetLevelCompleted(true);
             winningEvents?.Invoke();
-        }else{
-            isLoss = true;
+        }if(hasLost()){
             Debug.Log("you Loss");
             lossEvents?.Invoke();
         }
@@ -125,7 +118,7 @@ public class GameManager : MonoBehaviour {
          
         levelManager.MoveOut(levelManager.GetCurrentTable);
 
-        shooter.canShoot = false;
+        shooter.SetHasShotTheBall(false);
         levelManager.GetCurrentTable.currentActiveTable = false;
         yield return new WaitForSeconds(0.5f);
         
@@ -141,9 +134,9 @@ public class GameManager : MonoBehaviour {
         
         yield return new WaitForSeconds(0.1f);
         levelManager.GetCurrentTable.TableRotate(true);
-        levelManager.GetCurrentTable.StartTimer = true;
-        shooter.table = levelManager.GetCurrentTable;
-        shooter.canShoot = true;
+        levelManager.GetCurrentTable.TurnOnTimer(true);
+        shooter.SetTable(levelManager.GetCurrentTable);
+        shooter.SetCanShoot(true);
     }
     
     
@@ -151,7 +144,7 @@ public class GameManager : MonoBehaviour {
         if(!levelManager.GetCurrentTable.isGameLost){
             if(clearedTablesList.Count == totalTableCount){
                 for (int i = 0; i < clearedTablesList.Count; i++){
-                    if(clearedTablesList[i].isTableCleared){
+                    if(clearedTablesList[i].GetCompletedTheCurrentTable){
                         return true;
                     }
                 }
@@ -161,7 +154,7 @@ public class GameManager : MonoBehaviour {
         return false;
     }
     private bool hasLost(){
-        if(levelManager.GetCurrentTable.isGameLost){
+        if(levelManager.GetCurrentTable.isGameLost || isLoss){
             return true;
         }
         return false;

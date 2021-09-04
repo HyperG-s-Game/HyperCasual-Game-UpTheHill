@@ -24,7 +24,7 @@ public class LevelManager : MonoBehaviour {
         }
     }
     public void SetLevelCompleted(bool _isComplete){
-        currentLevelData.isCompleted = _isComplete;
+        currentLevelData.levelData.isCompleted = _isComplete;
     }
     public void SetCurrentTable(int _intdex){
         for (int i = 0; i < tablesList.Count; i++){

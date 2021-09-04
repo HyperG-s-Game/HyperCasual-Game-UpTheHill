@@ -13,6 +13,8 @@ public class StartingTable : MonoBehaviour {
     public Transform forwardShooterDirection;
     public float timeToMove;
     public iTween.EaseType easeType = iTween.EaseType.easeInExpo;
+    public float timerToMoveToShootingPos = 0.1f;
+    public iTween.EaseType easyTypeForLaterBalls = iTween.EaseType.easeInOutExpo;
     public List<Ball> ballsList = new List<Ball>();
     public List<Transform> ballPositionPoint = new List<Transform>();
     public EndTable endTable;
@@ -21,17 +23,24 @@ public class StartingTable : MonoBehaviour {
     
     private Ball currentBall;
     public bool currentActiveTable;
-    public bool isTableCleared;
-    public bool StartTimer;
-    
+    private bool isTableCleared;
+    private bool StartTimer;
+    private GameManager gameManager;
+    private bool readyToShoot;
+    private bool hasReachedToShootingPos;
     private void Start(){
         currentTime = maxTime;
         UIManager.instance.SetTimer(currentTime);
         CameraMovementManager.instance.GetCameras(tableCam);
+        gameManager = GameManager.instance;
+        
     }
 
-   
     public void InitTable(){
+       StartCoroutine(InitTableRoutine());
+    }
+    private IEnumerator InitTableRoutine(){
+        yield return new WaitForSeconds(0.2f);
         for (int i = 0; i < ballsList.Count; i++){
             iTween.MoveTo(ballsList[i].gameObject,iTween.Hash(
                 "x", ballPositionPoint[i].position.x,
@@ -47,12 +56,20 @@ public class StartingTable : MonoBehaviour {
         rotator.startRotation = _state;
 
     }
-    private void Update(){
-        if(ballsList.Count == 0){
+    private IEnumerator CheckForTableClear(){
+        yield return new WaitForSeconds(1f);
+        if(ballsList.Count <= 0){
+            yield return new WaitForSeconds(0.1f);
             if(!isTableCleared){
                 isTableCleared = true;
             }
         }
+        
+    }
+    
+    
+    private void Update(){
+        
         if(StartTimer){
             if(currentActiveTable && !isTableCleared){
                 if(currentTime > 0){
@@ -60,19 +77,20 @@ public class StartingTable : MonoBehaviour {
                     if(timePerSecond <= 0f){
                         currentTime--;
                         UIManager.instance.SetTimer(currentTime);
-                        
                         timePerSecond = 1;
                     }
                 }else{
-                    GameManager.instance.isLoss = true;
+                    gameManager.isLoss = true;
                 }
             }
 
         }
         
     }
+    
     public void ShotBall(Vector3 direction){
         currentBall.Shoot(direction);
+        StartCoroutine(CheckForTableClear());
     }
     
     public void ResetTimer(){
@@ -81,26 +99,39 @@ public class StartingTable : MonoBehaviour {
     }
     
     public void RemoveBallFromList(){
+        hasReachedToShootingPos = false;
         ballsList.RemoveAt(0);
-    }
-    public void MoveBallToShootingPoint(){
         
+    }
+    
+    public void MoveBallToShootingPoint(){
+        if(!hasReachedToShootingPos){
+            StartCoroutine(MoveBallToShootingPointRoutine());
+            hasReachedToShootingPos = true;
+        }
+    }
+    private IEnumerator MoveBallToShootingPointRoutine(){
+        yield return new WaitForSeconds(0.3f);
         if(ballsList.Count > 0){
+            readyToShoot = false;
             currentBall = ballsList[0];
             iTween.MoveTo(currentBall.gameObject,iTween.Hash(
                 "x", startingPoint.position.x,
                 "y", startingPoint.position.y,
                 "z", startingPoint.position.z,
-                "time",timeToMove,
-                "easyType",easeType
+                "time",timerToMoveToShootingPos,
+                "easyType",easyTypeForLaterBalls
             ));
             currentBall.transform.rotation = forwardShooterDirection.transform.rotation;
             currentBall.transform.SetParent(forwardShooterDirection.transform);
-             
+            yield return new WaitForSeconds(0.1f);
+            readyToShoot = true; 
 
         }
     }
-    
+    public void TurnOnTimer(bool start){
+        StartTimer = start;
+    }
     
     public bool GetCompletedTheCurrentTable{
         get{
@@ -109,7 +140,13 @@ public class StartingTable : MonoBehaviour {
     }
     public bool isGameLost{
         get{
-            return isTableCleared && endTable.collectedBalls.Count == 0;
+            if(!endTable.GetIsBallMovingThroughPipe){
+                if(isTableCleared && endTable.GetListOfCollectedBalls.Count == 0){
+                    return true;
+                }
+
+            }
+            return false;
         }
     }
     public int GetCurrentTime{
@@ -117,7 +154,11 @@ public class StartingTable : MonoBehaviour {
             return currentTime;
         }
     }
-    
+    public bool GetReadyToShoot{
+        get{
+            return readyToShoot;
+        }
+    }
 
 
 }

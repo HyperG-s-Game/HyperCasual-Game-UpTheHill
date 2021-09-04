@@ -637,6 +637,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a6a75ef412210fa47be99cc71a8391eb, type: 2}
   - {fileID: 11400000, guid: 7e06ae19b318d06479dbc8acc90fd7f7, type: 2}
   - {fileID: 11400000, guid: f3bdd6808a3206e44b15e0cc64b82d84, type: 2}
+  - {fileID: 11400000, guid: 2252204e635e0b643bc6aca28add759a, type: 2}
+  - {fileID: 11400000, guid: ff9b54339ac0e4d449b2b6f9d94a3fee, type: 2}
   levelName: {fileID: 634548620}
   selectButton: {fileID: 1497975932}
   priviewImage: {fileID: 1111240151}

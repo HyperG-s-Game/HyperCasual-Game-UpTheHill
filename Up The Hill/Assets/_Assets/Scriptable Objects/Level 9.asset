@@ -15,5 +15,6 @@ MonoBehaviour:
   currentScene: 10
   levelName: Level 9
   levelColor: {r: 0.3300646, g: 0.6792453, b: 0, a: 1}
-  hasUnloacked: 1
-  isCompleted: 0
+  levelData:
+    hasUnloacked: 1
+    isCompleted: 0

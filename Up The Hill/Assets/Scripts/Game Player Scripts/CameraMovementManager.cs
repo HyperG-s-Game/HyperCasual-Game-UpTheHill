@@ -12,7 +12,10 @@ public class CameraMovementManager : MonoBehaviour {
         }else{
             Destroy(instance.gameObject);
         }
+    }
+    private void Start(){
         virtualCameras = new List<CinemachineVirtualCamera>();
+
     }
     public void GetCameras(CinemachineVirtualCamera cam){
         virtualCameras.Add(cam);

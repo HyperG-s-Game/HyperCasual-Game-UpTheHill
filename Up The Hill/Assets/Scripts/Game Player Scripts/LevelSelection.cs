@@ -37,7 +37,7 @@ public class LevelSelection : MonoBehaviour {
             if(i == currentLevelNumber){
                 levelName.SetText(levels[i].levelName);
                 priviewImage.color = levels[i].levelColor;
-                if(levels[i].hasUnloacked){
+                if(levels[i].levelData.hasUnloacked){
                     selectButton.interactable = true;
                 }else{
                     selectButton.interactable = false;

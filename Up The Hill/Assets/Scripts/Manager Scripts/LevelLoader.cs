@@ -1,10 +1,9 @@
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
-
+using System.Linq;
 
 
 public enum SceneIndex{
@@ -18,7 +17,7 @@ public enum SceneIndex{
     Level_56 = 57, Level_57 = 58, Level_58 = 59, Level_59 = 60, Level_60 = 61,Level_61 = 62, Level_62 = 63,Level_63 = 64, Level_64 = 65, Level_65 = 66, Level_66 = 67, Level_67 = 68, Level_68 = 69,
     Level_69 = 70, Level_70 = 71, Level_71 = 72, Level_72 = 71, Level_73 = 74, Level_74 = 75,Level_75 = 76, Level_76 = 77, Level_77 = 78, Level_78 = 79, Level_79 = 80, Level_80 = 81,
     Level_81 = 82, Level_82 = 83, Level_83 = 84, Level_84 = 85, Level_85 = 86, Level_86 = 87,Level_87 = 88, Level_88 = 89, Level_89 = 90, Level_90 = 91, Level_91 = 92, Level_92 = 93,
-    Level_93 = 94, Level_94 = 95, Level_95 = 96, Level_96 = 97, Level_97 = 98, Level_98 = 99,Level_99 = 100,Level_100 = 101,
+    Level_93 = 94, Level_94 = 95, Level_95 = 96, Level_96 = 97, Level_97 = 98, Level_98 = 99,Level_99 = 100,Level_100 = 101,Final_Scene = 102,
 }
 [System.Serializable]
 public class LevelsTableData{
@@ -35,38 +34,39 @@ public class LevelLoader : MonoBehaviour{
     
     [SerializeField] private GameObject loadingScreen;
     [SerializeField] private LevelsTableData[] levelsTableData;
-    [SerializeField] private List<LevelSO> levelList;
     [SerializeField] private Image loadingBar;
-    public SceneIndex currentLevel;
+    [SerializeField] private SceneIndex currentScene;
+    
+
+    #region Singelton.....
     public static LevelLoader instance {get;private set;}
-    private float totalProgress;
     private void Awake(){
         if(instance == null){
             instance = this;
         }else{
+            Debug.Log("Found Other Level Loader ");
             Destroy(instance.gameObject);
         }
         DontDestroyOnLoad(instance.gameObject);
+        
+    }
+    #endregion
+    
+    private void Start(){
         if(loadingScreen == null){
             loadingScreen = transform.Find("loadingScreen").gameObject;
         }
-
-    }
-    
-    
-    private void Start(){
-        
         SwitchScene(SceneIndex.Main_Menu);
-        for (int i = 0; i < levelList.Count; i++){
-            levelList[i].CreateNewTableList();
-            if(!levelList[i].isCompleted){
-                currentLevel = levelList[i].currentScene;
+        
+        for (int i = 0; i < levelsTableData.Length; i++){
+            levelsTableData[i].level.CreateNewTableList();
+            if(!levelsTableData[i].level.levelData.isCompleted){
+                currentScene = levelsTableData[i].level.currentScene;
                 break;
             }
         }
         AddTableToLevels();
     }
-    [ContextMenu("Add Table")]
     private void AddTableToLevels(){
         for (int i = 0; i < levelsTableData.Length; i++){
             levelsTableData[i].AddTableToLevel();
@@ -74,25 +74,29 @@ public class LevelLoader : MonoBehaviour{
     }
     
     public void PlayLevel(){
-        SwitchScene(currentLevel);
+        if(currentScene == SceneIndex.persistantScene || currentScene == SceneIndex.Main_Menu){
+            SwitchScene(SceneIndex.Final_Scene);
+
+        }else{
+            SwitchScene(currentScene);
+        }
     }
     
     
     
     public void MoveToNextLevel(){
-        for(int i = 0 ; i < levelList.Count; i++){
-            if(currentLevel == levelList[i].currentScene){
-                if(i + 1 < levelList.Count - 1){
-                    currentLevel = levelList[i+1].currentScene;
+        for(int i = 0 ; i < levelsTableData.Length; i++){
+            if(currentScene == levelsTableData[i].level.currentScene){
+                if(i + 1 < levelsTableData.Length - 1){
+                    currentScene = levelsTableData[i+1].level.currentScene;
                 }
                 break;
             }
         }
-        SwitchScene(currentLevel);
-        
+        SwitchScene(currentScene);
     }
     public void SetCurrentLevel(SceneIndex currntScene){
-        currentLevel = currntScene;
+        currentScene = currntScene;
         PlayLevel();
     }
     
@@ -105,7 +109,7 @@ public class LevelLoader : MonoBehaviour{
     private IEnumerator GetLoadSceneProgress(SceneIndex _sceneToLoad){
         loadingScreen.SetActive(true);
         AsyncOperation operation = SceneManager.LoadSceneAsync((int)_sceneToLoad);
-        totalProgress = 0f;
+        float totalProgress = 0f;
         while(!operation.isDone){
             totalProgress = Mathf.Clamp01(operation.progress / 0.9f);
             loadingBar.fillAmount = totalProgress;
@@ -114,6 +118,11 @@ public class LevelLoader : MonoBehaviour{
         }
         loadingScreen.SetActive(false);
         
+    }
+    private void OnApplicatioQuit(){
+        for (int i = 0; i < levelsTableData.Length; i++){
+            levelsTableData[i].level.ClearTableList();
+        }
     }
 }
 
